@@ -1,0 +1,39 @@
+.square{
+    --size: 200px;
+    width: var(--size);
+    height: var(--size);
+}
+
+.img-width{
+    width: 100%;
+    height: 100%;
+}
+
+/*TOOLTIP*/
+.tooltip-content {
+    position: absolute;
+    z-index: 1;
+    width: 300px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 3px;
+    top: calc(50% - 17px);
+    left: calc(50% - 60px);
+    animation-name: fade-tooltip;
+    animation-duration: 1.5s;
+    animation-delay: 3s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fade-tooltip {
+    from{
+        background-color: black;
+    }
+    to{
+        background-color: transparent;
+        color: transparent;
+    }
+}
