@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--CSS Bootstrap-->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <!-- CSS Main -->
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Tic Tac Toe</title>
+</head>
+<body>
+    <h1 class="text-primary text-center">Tic Tac Toe</h1>
+    <div class="container bg-dark bg-image" id="board">
+        <!-- Row #1 -->
+        <div class="row d-flex justify-content-center">
+            <div class="bg-white square p-2 d-flex align-items-center" id="square-11"></div>
+            <div class="bg-primary square p-0 d-flex align-items-center" id="square-12"></div>
+            <div class="bg-secondary square p-0 d-flex align-items-center" id="square-13"></div>
+        </div>
+        <!-- Row #2 -->
+        <div class="row d-flex justify-content-center">
+            <div class="bg-info square p-0 d-flex align-items-center" id="square-21"></div>
+            <div class="bg-warning square p-0 d-flex align-items-center" id="square-22"></div>
+            <div class="bg-danger square p-0 d-flex align-items-center position-relative" id="square-23"><!--<img src="./img/XBrushedIcon.png" alt="Kenzie" class="img-width">--></div>
+        </div>
+        <!-- Row #3 -->
+        <div class="row d-flex justify-content-center">
+            <div class="bg-light square p-0 d-flex align-items-center" id="square-31"></div>
+            <div class="bg-info square p-0 d-flex align-items-center" id="square-32"></div>
+            <div class="bg-light square p-0 d-flex align-items-center" id="square-33"></div>
+        </div>
+    </div>
+    <!--JS Bootstrap-->
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <!-- JS Main -->
+    <script src="./js/main.js"></script>
+</body>
+</html>
