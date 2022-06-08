@@ -1,4 +1,52 @@
-playerOneTurn = true;
+/* HERE WE GO AGAIN. OK LET'S SEE*/
+//First I catch the board
+const $board = document.getElementById('board');
+
+//Then I add an event listener  to the board (click)
+$board.addEventListener('click', e=>{
+    drawAnO(e);
+})
+
+//Let's create a function to draw the X icon
+function drawAnX(element){
+    //We create a variable to catch the clicked element and save into it
+    let $clickedElement = element.target;
+    
+    //Now, we create an HTML element to store our X icon and save it
+    //into a variable 
+    let $img = document.createElement('img');
+    //And we set its attributes src and a class
+    $img.setAttribute('src', './img/XBrushedIcon.png');
+    $img.setAttribute('class', 'img-width');
+
+    //And now we insert our created element as a child of the clicked element
+    $clickedElement.appendChild($img);
+
+    //now we can call this function when an element of the board is clicked
+}
+
+//And another one to draw the O icon
+function drawAnO(element){
+    //We create a variable to catch the clicked element and save into it
+    let $clickedElement = element.target;
+    
+    //Now, we create an HTML element to store our X icon and save it
+    //into a variable 
+    let $img = document.createElement('img');
+    //And we set its attributes src and a class
+    $img.setAttribute('src', './img/OBrushedIcon.png');
+    $img.setAttribute('class', 'img-width');
+
+    //And now we insert our created element as a child of the clicked element
+    $clickedElement.appendChild($img);
+
+    //now we can call this function when an element of the board is clicked
+}
+
+
+
+//First code. To have an idea about how to work
+/*playerOneTurn = true;
 function XorOIcon(){
     if(playerOneTurn) {
         iconPath = './img/XBrushedIcon.png';
@@ -39,4 +87,4 @@ $board.addEventListener('click', (e)=>{
     $clickedElement = e.target;
     isAlreadyOccupied(e);
     addIcon($clickedElement);
-});
+});*/
