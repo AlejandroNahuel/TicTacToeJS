@@ -4,7 +4,7 @@ const $board = document.getElementById('board');
 
 //Then I add an event listener  to the board (click)
 $board.addEventListener('click', e=>{
-    drawAnO(e);
+    drawAnX(e);
 })
 
 //Let's create a function to draw the X icon
