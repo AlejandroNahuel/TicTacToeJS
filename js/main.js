@@ -1,10 +1,47 @@
 /* HERE WE GO AGAIN. OK LET'S SEE*/
 //First I catch the board
 const $board = document.getElementById('board');
+const errorMessage = "Field already taken, choose another one (:";
+const $errorMessage = document.createElement('p');
+
+$errorMessage.setAttribute('class','text-center text-danger h1');
+$board.after($errorMessage);
+
+/*In the logic part, first we need to know who's turn is, so we can decide whether draw an X or an O
+For this we make a boolean variable asking for player one turn*/
+let isPlayerOneTurn = true;
+/* and we use this variable in the listener*/
+
+/*For avoid the players click on a field that is already taken, we need to create a function*/
+function isFieldTaken(element){
+    if(element.target.localName == 'img'){
+        $errorMessage.innerHTML = errorMessage;
+
+        return true;
+    }
+    else{
+        $errorMessage.innerHTML = '';
+
+        return false;
+    }
+}
 
 //Then I add an event listener  to the board (click)
-$board.addEventListener('click', e=>{
-    drawAnX(e);
+$board.addEventListener('click', (e)=>{
+    //console.log(isPlayerOneTurn);
+    //If a field is taken we shouldn't let the players draw their icon in it
+    //And ask them to take another one
+    if(!isFieldTaken(e)){
+        //Depending on who's turn is, we draw an X or an O
+        if(isPlayerOneTurn){
+            drawAnX(e);
+            isPlayerOneTurn = false;
+        }
+        else{
+            drawAnO(e);
+            isPlayerOneTurn = true;
+        }
+    }
 })
 
 //Let's create a function to draw the X icon
@@ -42,6 +79,16 @@ function drawAnO(element){
 
     //now we can call this function when an element of the board is clicked
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

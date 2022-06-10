@@ -28,6 +28,10 @@
     animation-fill-mode: forwards;
 }
 
+img{
+    cursor: not-allowed;
+}
+
 @keyframes fade-tooltip {
     from{
         background-color: black;
