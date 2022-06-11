@@ -1,6 +1,78 @@
 /* HERE WE GO AGAIN. OK LET'S SEE*/
 //First I catch the board
 const $board = document.getElementById('board');
+
+//Then I catch every box of the board in an array
+//First we declarate the array
+let $boardArray = new Array(3);
+for (i=0; i<$boardArray.length; i++){
+    $boardArray[i] = new Array($boardArray.length);
+}
+
+//Then we catch every box by its ID
+let counter = 1;
+for(row in $boardArray){
+    for(column in $boardArray){
+        $boardArray[row][column] = document.getElementById(counter.toString());
+        counter++;
+    }
+}
+
+// We verify Lines
+for(row in $boardArray){
+    let rowItemCounter = 0;
+    let columnItemCounter = 0;
+    
+    for(column in $boardArray){
+        //Verifying rows
+        console.log('Fila: ' + row);
+        console.log('       Columna: ' + column)     
+        if($boardArray[row][column].childElementCount !=0){
+            rowItemCounter++;
+        }
+        if (rowItemCounter== 3){
+            console.log('Mensaje antes de verificar fila ' + row)   
+            if (verifyRow(row)){
+                console.log('Fila Verificada!')
+                break;
+            }
+            console.log ('Mensaje despues de verificar fila ' + row);    
+        }
+
+        //Verifying Columns
+        console.log ('Columna: ' + column);
+        console.log('       Fila:' + row)     
+        if($boardArray[column][row].childElementCount !=0){
+            columnItemCounter++;
+        }
+        if(columnItemCounter==3){
+            console.log('Mensaje antes de verificar columna ' + column);
+            if(verifyColumn(column)) break;
+            console.log('Mensaje después de verificar columna' + column)
+        }
+    }
+}
+
+function verifyRow(row){
+    rowItem = [];
+    for (i=0; i<3; i++){
+        rowItem[i] = $boardArray[row][i].children[0].alt;
+    }
+    if(rowItem[0]==rowItem[1])
+        return rowItem[1] == rowItem[2];
+    else return false;
+}
+
+function verifyColumn(column){
+    columnItem = [];
+    for (i=0; i<3; i++){
+        columnItem[i] = $boardArray[column][i].children[0].alt;
+    }
+    if(columnItem[0]==columnItem[1])
+        return columnItem[1] == columnItem[2];
+    else return false;
+}
+
 const errorMessage = "Field already taken, choose another one (:";
 const $errorMessage = document.createElement('p');
 
@@ -55,6 +127,7 @@ function drawAnX(element){
     //And we set its attributes src and a class
     $img.setAttribute('src', './img/XBrushedIcon.png');
     $img.setAttribute('class', 'img-width');
+    $img.setAttribute('alt', 'X-icon');
 
     //And now we insert our created element as a child of the clicked element
     $clickedElement.appendChild($img);
@@ -73,6 +146,7 @@ function drawAnO(element){
     //And we set its attributes src and a class
     $img.setAttribute('src', './img/OBrushedIcon.png');
     $img.setAttribute('class', 'img-width');
+    $img.setAttribute('alt', 'O-Icon')
 
     //And now we insert our created element as a child of the clicked element
     $clickedElement.appendChild($img);
