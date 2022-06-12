@@ -19,40 +19,99 @@ for(row in $boardArray){
 }
 
 // We verify Lines
+//Rows
+//console.log('Verificando Filas')
 for(row in $boardArray){
+    //We initialize a counter
     let rowItemCounter = 0;
-    let columnItemCounter = 0;
     
+    //Verifying rows
     for(column in $boardArray){
-        //Verifying rows
-        console.log('Fila: ' + row);
-        console.log('       Columna: ' + column)     
+        //console.log('Fila: ' + row);
+        //console.log('       Columna: ' + column);
+        //If the element has a child, we add +1 to the counter    
         if($boardArray[row][column].childElementCount !=0){
             rowItemCounter++;
         }
-        if (rowItemCounter== 3){
-            console.log('Mensaje antes de verificar fila ' + row)   
-            if (verifyRow(row)){
-                console.log('Fila Verificada!')
-                break;
-            }
-            console.log ('Mensaje despues de verificar fila ' + row);    
+    }
+    
+    //console.log('Mensaje antes de verificar fila ' + row)
+    //If the counter equals 3, it means that the items in the whole row have a child
+    if (rowItemCounter== 3){   
+        //So we can verify if all the icons in the row are the same
+        if (verifyRow(row)){
+            //console.log('Fila Verificada!')
+            break;
         }
-
-        //Verifying Columns
-        console.log ('Columna: ' + column);
-        console.log('       Fila:' + row)     
-        if($boardArray[column][row].childElementCount !=0){
-            columnItemCounter++;
-        }
-        if(columnItemCounter==3){
-            console.log('Mensaje antes de verificar columna ' + column);
-            if(verifyColumn(column)) break;
-            console.log('Mensaje después de verificar columna' + column)
-        }
+        //console.log ('Mensaje despues de verificar fila ' + row);    
+    }
+    else{
+        //console.log('Fila no verificada, vamos a la siguiente');
     }
 }
 
+//Columns
+//console.log('Vericando columnas')
+for(column in $boardArray){
+    //Initialize a counter
+    let columnItemCounter = 0;
+    for(row in $boardArray){
+        let columnItemCounter = 0;
+        //Verifying Columns
+        //console.log ('Columna: ' + column);
+        //console.log('       Fila:' + row);
+        //If the item has a child, we add +1 to the counter   
+        if($boardArray[row][column].childElementCount !=0){
+            columnItemCounter++;
+        }
+    }
+    //console.log('Mensaje antes de verificar columna ' + column);
+    //If the counter equals 3, it means that the items in the whole column have a child
+    if(columnItemCounter==3){
+        //So, we can check if all the children are the same
+        if(verifyColumn(column)){
+            //console.log('Columna Verificada!');
+            break;
+        }
+        //console.log('Mensaje después de verificar columna' + column);
+    }
+    else{
+        //console.log('Columna no verificada, vamos a la siguiente')
+    }
+}
+
+//Diagonals
+mainDiagonal = new Array(3);
+secondaryDiagonal = new Array(3);
+
+//We fill the elements on the principal diagonal
+function createMainDiagonal(){
+    for (let i=0; i<mainDiagonal.length; i++){
+        mainDiagonal[i] = $boardArray[i][i];
+    };
+    
+    console.log(mainDiagonal);
+};
+createMainDiagonal();
+
+//and fill the elements of the secondary diagonal
+function createSecondaryDiagonal(){
+    let rowAndColumn;
+
+    for (row in $boardArray){
+        for(column in $boardArray){
+            rowAndColumn = parseInt(row) + parseInt(column);
+            if(rowAndColumn == 2){
+                secondaryDiagonal[column] = $boardArray[row][column];
+            }
+        }
+    }
+    console.log(secondaryDiagonal);
+};
+
+createSecondaryDiagonal();
+
+//function for verify rows
 function verifyRow(row){
     rowItem = [];
     for (i=0; i<3; i++){
@@ -63,6 +122,7 @@ function verifyRow(row){
     else return false;
 }
 
+//function for verify columns
 function verifyColumn(column){
     columnItem = [];
     for (i=0; i<3; i++){
