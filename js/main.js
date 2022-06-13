@@ -1,8 +1,8 @@
 /* HERE WE GO AGAIN. OK LET'S SEE*/
-//First I catch the board
+//First we catch the board
 const $board = document.getElementById('board');
 
-//Then I catch every box of the board in an array
+//Then we catch every box of the board in an array
 //First we declarate the array
 let $boardArray = new Array(3);
 for (i=0; i<$boardArray.length; i++){
@@ -18,66 +18,74 @@ for(row in $boardArray){
     }
 }
 
-// We verify Lines
+// We need to a function to verify lines
 //Rows
-//console.log('Verificando Filas')
-for(row in $boardArray){
-    //We initialize a counter
-    let rowItemCounter = 0;
-    
-    //Verifying rows
-    for(column in $boardArray){
-        //console.log('Fila: ' + row);
-        //console.log('       Columna: ' + column);
-        //If the element has a child, we add +1 to the counter    
-        if($boardArray[row][column].childElementCount !=0){
-            rowItemCounter++;
+function verifyRow(){
+    console.log('Verificando Filas')
+    let rowVerified = false;
+    for (row in $boardArray) {
+        //We initialize a counter
+        let rowItemCounter = 0;
+        //Verifying rows
+        for (column in $boardArray) {
+            console.log('Fila: ' + row);
+            console.log('       Columna: ' + column);
+            //If the element has a child, we add +1 to the counter    
+            if ($boardArray[row][column].childElementCount != 0) {
+                rowItemCounter++;
+            }
+        }
+
+        console.log('Mensaje antes de verificar fila ' + row)
+        //If the counter equals 3, it means that the items in the whole row have a child
+        if (rowItemCounter == 3) {
+            //So we can verify if all the icons in the row are the same
+            if (rowValidation(row)) {
+                console.log('Fila Verificada!');
+                rowVerified = true;
+                break;
+            }
+            console.log ('Mensaje despues de verificar fila ' + row);    
+        } else {
+            console.log('Fila no verificada, vamos a la siguiente');
         }
     }
-    
-    //console.log('Mensaje antes de verificar fila ' + row)
-    //If the counter equals 3, it means that the items in the whole row have a child
-    if (rowItemCounter== 3){   
-        //So we can verify if all the icons in the row are the same
-        if (verifyRow(row)){
-            //console.log('Fila Verificada!')
-            break;
-        }
-        //console.log ('Mensaje despues de verificar fila ' + row);    
-    }
-    else{
-        //console.log('Fila no verificada, vamos a la siguiente');
-    }
+    return rowVerified;
 }
 
+//Verify columns
 //Columns
-//console.log('Vericando columnas')
-for(column in $boardArray){
-    //Initialize a counter
-    let columnItemCounter = 0;
-    for(row in $boardArray){
+function verifyColumn(){
+    console.log('Vericando columnas')
+    let columnVerified = false;
+    for (column in $boardArray) {
+        //Initialize a counter
         let columnItemCounter = 0;
-        //Verifying Columns
-        //console.log ('Columna: ' + column);
-        //console.log('       Fila:' + row);
-        //If the item has a child, we add +1 to the counter   
-        if($boardArray[row][column].childElementCount !=0){
-            columnItemCounter++;
+        for (row in $boardArray) {
+            //Verifying Columns
+            console.log ('Columna: ' + column);
+            console.log('       Fila:' + row);
+            //If the item has a child, we add +1 to the counter   
+            if ($boardArray[row][column].childElementCount != 0) {
+                columnItemCounter++;
+            }
+            console.log('Contador hijos: ' + columnItemCounter);
+        }
+        console.log('Mensaje antes de verificar columna ' + column);
+        //If the counter equals 3, it means that the items in the whole column have a child
+        if (columnItemCounter == 3) {
+            //So, we can check if all the children are the same
+            if (columnValidation(column)) {
+                console.log('Columna Verificada!');
+                columnVerified = true;
+                break;
+            }
+            console.log('Mensaje después de verificar columna' + column);
+        } else {
+            console.log('Columna no verificada, vamos a la siguiente')
         }
     }
-    //console.log('Mensaje antes de verificar columna ' + column);
-    //If the counter equals 3, it means that the items in the whole column have a child
-    if(columnItemCounter==3){
-        //So, we can check if all the children are the same
-        if(verifyColumn(column)){
-            //console.log('Columna Verificada!');
-            break;
-        }
-        //console.log('Mensaje después de verificar columna' + column);
-    }
-    else{
-        //console.log('Columna no verificada, vamos a la siguiente')
-    }
+    return columnVerified;
 }
 
 //Diagonals
@@ -89,8 +97,6 @@ function createMainDiagonal(){
     for (let i=0; i<mainDiagonal.length; i++){
         mainDiagonal[i] = $boardArray[i][i];
     };
-    
-    console.log(mainDiagonal);
 };
 createMainDiagonal();
 
@@ -106,13 +112,11 @@ function createSecondaryDiagonal(){
             }
         }
     }
-    console.log(secondaryDiagonal);
 };
-
 createSecondaryDiagonal();
 
-//function for verify rows
-function verifyRow(row){
+//function for validate if a row has the same item in all its elements
+function rowValidation(row){
     rowItem = [];
     for (i=0; i<3; i++){
         rowItem[i] = $boardArray[row][i].children[0].alt;
@@ -122,14 +126,33 @@ function verifyRow(row){
     else return false;
 }
 
-//function for verify columns
-function verifyColumn(column){
+//function for validate if a column has the same item in all its elements
+function columnValidation(column){
     columnItem = [];
     for (i=0; i<3; i++){
-        columnItem[i] = $boardArray[column][i].children[0].alt;
+        columnItem[i] = $boardArray[i][column].children[0].alt;
     }
     if(columnItem[0]==columnItem[1])
         return columnItem[1] == columnItem[2];
+    else return false;
+}
+
+//function for validate if a diagonal has the same item in all its elements
+function diagonalValidation(diagonal){
+    let counter = 0;
+    for(let i=0; i<diagonal.length; i++){
+        if (diagonal[i].childElementCount != 0){
+            counter++;
+        }
+    }
+    if(counter == 3){
+        for(let i=0; i<diagonal.length; i++){
+            diagonal[i] = diagonal[i].children[0].alt;
+        }
+    }
+    if(diagonal[0]==diagonal[1]){
+        return diagonal[1]==diagonal[2];
+    }
     else return false;
 }
 
@@ -158,11 +181,13 @@ function isFieldTaken(element){
     }
 }
 
-//Then I add an event listener  to the board (click)
+//Then we add an event listener to the board (click)
 $board.addEventListener('click', (e)=>{
-    //console.log(isPlayerOneTurn);
     //If a field is taken we shouldn't let the players draw their icon in it
     //And ask them to take another one
+    let $divForTheWinner = document.createElement('div');
+    $divForTheWinner.innerHTML='You won!';
+    let $videoForTheWinner = document.createElement('video');
     if(!isFieldTaken(e)){
         //Depending on who's turn is, we draw an X or an O
         if(isPlayerOneTurn){
@@ -173,8 +198,14 @@ $board.addEventListener('click', (e)=>{
             drawAnO(e);
             isPlayerOneTurn = true;
         }
+        //After a player has drawn his icon we must verify rows, columns and diagonals
+        if(verifyRow()){
+            
+        }
+
     }
 })
+
 
 //Let's create a function to draw the X icon
 function drawAnX(element){
