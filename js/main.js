@@ -2,6 +2,14 @@
 //First we catch the board
 const $board = document.getElementById('board');
 
+
+//We add some constants
+playerOne = 'Player one';
+playerTwo = 'Player two';
+let $divForTheWinner = document.createElement('div');
+$divForTheWinner.setAttribute('class', 'text-success text-center h1 mt-1');
+$board.after($divForTheWinner);
+
 //Then we catch every box of the board in an array
 //First we declarate the array
 let $boardArray = new Array(3);
@@ -53,7 +61,6 @@ function verifyRow(){
     return rowVerified;
 }
 
-//Verify columns
 //Columns
 function verifyColumn(){
     console.log('Vericando columnas')
@@ -181,13 +188,20 @@ function isFieldTaken(element){
     }
 }
 
+//Function that shows a message to the winner
+function whosTheWinner(){
+    if(!isPlayerOneTurn){                
+        return `${playerOne} won!`;
+    }
+    else{
+        return `${playerTwo} won!`;
+    }
+}
+
 //Then we add an event listener to the board (click)
 $board.addEventListener('click', (e)=>{
     //If a field is taken we shouldn't let the players draw their icon in it
     //And ask them to take another one
-    let $divForTheWinner = document.createElement('div');
-    $divForTheWinner.innerHTML='You won!';
-    let $videoForTheWinner = document.createElement('video');
     if(!isFieldTaken(e)){
         //Depending on who's turn is, we draw an X or an O
         if(isPlayerOneTurn){
@@ -200,12 +214,41 @@ $board.addEventListener('click', (e)=>{
         }
         //After a player has drawn his icon we must verify rows, columns and diagonals
         if(verifyRow()){
-            
+            launchModal();
+            return;
         }
-
+        if(verifyColumn()){
+            launchModal();
+            return;
+        }
+        if(diagonalValidation(mainDiagonal)){
+            launchModal();
+            return;
+        }
+        if(diagonalValidation(secondaryDiagonal)){
+            launchModal();
+            return;
+        }
     }
 })
+$modal = document.getElementById('staticBackdrop');
+function launchModal(){
+    $modalTitle = document.getElementById('staticBackdropLabel');
+    $modalTitle.innerHTML = whosTheWinner();   
+    $modal.classList.add('show', 'd-block');
+    $modal.setAttribute('aria-modal', 'true');
+    $modal.setAttribute('role', 'dialog');
+    $modal.removeAttribute('aria-hidden');
+    document.body.classList.add('modal-open', 'overflow-hidden', 'pe-0');
+}
 
+$modalBtn = document.getElementById('modalBtn');
+$modalBtn.addEventListener('click', e=>{
+    $modal.classList.toggle('d-block');
+    $modal.removeAttribute('aria-modal');
+    $modal.removeAttribute('role');
+    $modal.classList.toggle('show');    
+})
 
 //Let's create a function to draw the X icon
 function drawAnX(element){

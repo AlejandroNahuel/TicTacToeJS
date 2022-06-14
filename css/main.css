@@ -10,20 +10,10 @@
 }
 
 /*TOOLTIP*/
-.tooltip-content {
+#staticBackdrop {
     position: absolute;
-    z-index: 1;
-    width: 300px;
-    background-color: black;
-    color: white;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 3px;
-    top: calc(50% - 17px);
-    left: calc(50% - 60px);
-    animation-name: fade-tooltip;
-    animation-duration: 1.5s;
-    animation-delay: 3s;
+    animation-name: modal-appear;
+    animation-duration: .7s;
     animation-timing-function: ease;
     animation-fill-mode: forwards;
 }
@@ -32,12 +22,13 @@ img{
     cursor: not-allowed;
 }
 
-@keyframes fade-tooltip {
+@keyframes modal-appear {
     from{
-        background-color: black;
+        /*top: -100%;*/
+        opacity: 0;
     }
     to{
-        background-color: transparent;
-        color: transparent;
+        /*top: 100%*/
+        opacity: 1;
     }
 }
