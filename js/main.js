@@ -29,67 +29,51 @@ for(row in $boardArray){
 // We need to a function to verify lines
 //Rows
 function verifyRow(){
-    console.log('Verificando Filas')
     let rowVerified = false;
     for (row in $boardArray) {
         //We initialize a counter
         let rowItemCounter = 0;
         //Verifying rows
         for (column in $boardArray) {
-            console.log('Fila: ' + row);
-            console.log('       Columna: ' + column);
             //If the element has a child, we add +1 to the counter    
             if ($boardArray[row][column].childElementCount != 0) {
                 rowItemCounter++;
             }
         }
 
-        console.log('Mensaje antes de verificar fila ' + row)
         //If the counter equals 3, it means that the items in the whole row have a child
         if (rowItemCounter == 3) {
             //So we can verify if all the icons in the row are the same
             if (rowValidation(row)) {
-                console.log('Fila Verificada!');
                 rowVerified = true;
                 break;
-            }
-            console.log ('Mensaje despues de verificar fila ' + row);    
-        } else {
-            console.log('Fila no verificada, vamos a la siguiente');
+            }    
         }
+
     }
     return rowVerified;
 }
 
 //Columns
 function verifyColumn(){
-    console.log('Vericando columnas')
     let columnVerified = false;
     for (column in $boardArray) {
         //Initialize a counter
         let columnItemCounter = 0;
         for (row in $boardArray) {
             //Verifying Columns
-            console.log ('Columna: ' + column);
-            console.log('       Fila:' + row);
             //If the item has a child, we add +1 to the counter   
             if ($boardArray[row][column].childElementCount != 0) {
                 columnItemCounter++;
             }
-            console.log('Contador hijos: ' + columnItemCounter);
         }
-        console.log('Mensaje antes de verificar columna ' + column);
         //If the counter equals 3, it means that the items in the whole column have a child
         if (columnItemCounter == 3) {
             //So, we can check if all the children are the same
             if (columnValidation(column)) {
-                console.log('Columna Verificada!');
                 columnVerified = true;
                 break;
             }
-            console.log('Mensaje después de verificar columna' + column);
-        } else {
-            console.log('Columna no verificada, vamos a la siguiente')
         }
     }
     return columnVerified;
@@ -147,20 +131,33 @@ function columnValidation(column){
 //function for validate if a diagonal has the same item in all its elements
 function diagonalValidation(diagonal){
     let counter = 0;
+    let aux = [];
     for(let i=0; i<diagonal.length; i++){
+        aux[i] = i;
         if (diagonal[i].childElementCount != 0){
             counter++;
         }
     }
     if(counter == 3){
         for(let i=0; i<diagonal.length; i++){
-            diagonal[i] = diagonal[i].children[0].alt;
+            aux[i] = diagonal[i].children[0].alt;
         }
     }
-    if(diagonal[0]==diagonal[1]){
-        return diagonal[1]==diagonal[2];
+    
+    if(aux[0]==aux[1]){
+        return aux[1]==aux[2];
     }
     else return false;
+}
+
+function isBoardFull(){
+    $fields = document.querySelectorAll('.item');
+    let counter = 0;
+    for(element of $fields){
+        counter += element.childElementCount;
+    }
+    console.log(counter);
+    return counter == 9;
 }
 
 const errorMessage = "Field already taken, choose another one (:";
@@ -213,27 +210,24 @@ $board.addEventListener('click', (e)=>{
             isPlayerOneTurn = true;
         }
         //After a player has drawn his icon we must verify rows, columns and diagonals
-        if(verifyRow()){
+        if(verifyRow() || verifyColumn() || diagonalValidation(mainDiagonal) || diagonalValidation(secondaryDiagonal)){
             launchModal();
             return;
         }
-        if(verifyColumn()){
-            launchModal();
-            return;
-        }
-        if(diagonalValidation(mainDiagonal)){
-            launchModal();
-            return;
-        }
-        if(diagonalValidation(secondaryDiagonal)){
-            launchModal();
-            return;
+        else if(isBoardFull()){
+            $modalTitle.innerHTML = 'Tie!';
+            $modal.classList.add('show', 'd-block');
+            $modal.setAttribute('aria-modal', 'true');
+            $modal.setAttribute('role', 'dialog');
+            $modal.removeAttribute('aria-hidden');
+            document.body.classList.add('modal-open', 'overflow-hidden', 'pe-0');
         }
     }
 })
-$modal = document.getElementById('staticBackdrop');
+
+const $modal = document.getElementById('staticBackdrop');
+let $modalTitle = document.getElementById('staticBackdropLabel');
 function launchModal(){
-    $modalTitle = document.getElementById('staticBackdropLabel');
     $modalTitle.innerHTML = whosTheWinner();   
     $modal.classList.add('show', 'd-block');
     $modal.setAttribute('aria-modal', 'true');
@@ -242,13 +236,24 @@ function launchModal(){
     document.body.classList.add('modal-open', 'overflow-hidden', 'pe-0');
 }
 
-$modalBtn = document.getElementById('modalBtn');
+const $modalBtn = document.getElementById('modalBtn');
 $modalBtn.addEventListener('click', e=>{
     $modal.classList.toggle('d-block');
     $modal.removeAttribute('aria-modal');
     $modal.removeAttribute('role');
-    $modal.classList.toggle('show');    
+    $modal.classList.toggle('show');
+    isPlayerOneTurn = true;
+    reset();
 })
+
+function reset(){
+    $itemsToDeleteChilds = document.querySelectorAll('.item');
+    for(element of $itemsToDeleteChilds){
+        if(element.childElementCount !=0){
+            element.removeChild(element.firstChild);
+        }
+    }
+}
 
 //Let's create a function to draw the X icon
 function drawAnX(element){
@@ -287,59 +292,3 @@ function drawAnO(element){
 
     //now we can call this function when an element of the board is clicked
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-//First code. To have an idea about how to work
-/*playerOneTurn = true;
-function XorOIcon(){
-    if(playerOneTurn) {
-        iconPath = './img/XBrushedIcon.png';
-        playerOneTurn = false;
-    }
-    else{
-        iconPath = './img/OBrushedIcon.png';
-        playerOneTurn = true;
-    }
-    return iconPath;
-}
-
-function addIcon (e){
-    imgSource= XorOIcon();
-    imgToInsert = document.createElement('img');
-    imgToInsert.src = imgSource;
-    imgToInsert.classList.add('d-block', 'img-width');
-    e.appendChild(imgToInsert);
-}
-
-function isAlreadyOccupied(HtmlElement){
-    if(HtmlElement.srcElement.localName == 'img'){
-        $spanTooltip = document.createElement('span');
-        $spanTooltip.setAttribute('class', 'tooltip-content');
-        $spanTooltip.innerHTML = 'This box is already taken. Pick another one :)';
-        HtmlElement.target.before($spanTooltip)
-        console.log(HtmlElement);
-        
-    }
-    else{
-        return console.log(false);
-    }
-}
-
-$board = document.getElementById('board');
-
-$board.addEventListener('click', (e)=>{
-    $clickedElement = e.target;
-    isAlreadyOccupied(e);
-    addIcon($clickedElement);
-});*/
