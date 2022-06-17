@@ -1,14 +1,15 @@
 /* HERE WE GO AGAIN. OK LET'S SEE*/
+//Variables declaration
 //First we catch the board
 const $board = document.getElementById('board');
-
+const errorMessage = "Field already taken, choose another one (:";
+const $errorMessage = document.createElement('p');
+$errorMessage.setAttribute('class','text-center text-danger h1');
+$board.after($errorMessage);
 
 //We add some constants
 playerOne = 'Player one';
 playerTwo = 'Player two';
-let $divForTheWinner = document.createElement('div');
-$divForTheWinner.setAttribute('class', 'text-success text-center h1 mt-1');
-$board.after($divForTheWinner);
 
 //Then we catch every box of the board in an array
 //First we declarate the array
@@ -159,12 +160,6 @@ function isBoardFull(){
     console.log(counter);
     return counter == 9;
 }
-
-const errorMessage = "Field already taken, choose another one (:";
-const $errorMessage = document.createElement('p');
-
-$errorMessage.setAttribute('class','text-center text-danger h1');
-$board.after($errorMessage);
 
 /*In the logic part, first we need to know who's turn is, so we can decide whether draw an X or an O
 For this we make a boolean variable asking for player one turn*/
